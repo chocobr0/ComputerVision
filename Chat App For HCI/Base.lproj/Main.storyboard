@@ -52,23 +52,6 @@
                                     <action selector="signup:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RhS-PL-enL"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D8J-qD-efO" userLabel="New Session">
-                                <rect key="frame" x="143" y="281" width="88" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="New Session"/>
-                                <connections>
-                                    <action selector="newSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pQ6-TB-jDw"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R7W-a6-BjZ">
-                                <rect key="frame" x="127" y="319" width="120" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Continue Session"/>
-                                <connections>
-                                    <action selector="contSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tcg-1n-V55"/>
-                                    <action selector="newSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2cM-Rv-iD4"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -76,12 +59,12 @@
                     <connections>
                         <outlet property="passwordField" destination="AX1-kI-yLD" id="rno-me-z3c"/>
                         <outlet property="usernameField" destination="qed-5g-vq6" id="4bO-mD-zMd"/>
-                        <segue destination="wFV-Q9-nUR" kind="show" identifier="SignToChatSegue" id="a9T-vQ-LPA"/>
+                        <segue destination="MZM-v5-uye" kind="show" identifier="SignToSessionSegue" id="kGh-hE-8C5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="117.59999999999999" y="117.39130434782609"/>
+            <point key="canvasLocation" x="-74" y="117"/>
         </scene>
         <!--Chat-->
         <scene sceneID="1ze-wW-raY">
@@ -115,6 +98,53 @@
             </objects>
             <point key="canvasLocation" x="2226" y="117"/>
         </scene>
+        <!--SessionVC-->
+        <scene sceneID="OIp-Hz-mWn">
+            <objects>
+                <viewController id="MZM-v5-uye" customClass="SessionVC" customModule="Chat_App_For_HCI" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Qrf-fc-jPi">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D8J-qD-efO" userLabel="New Session">
+                                <rect key="frame" x="143" y="158" width="88" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="New Session"/>
+                                <connections>
+                                    <action selector="newSession:" destination="MZM-v5-uye" eventType="touchUpInside" id="9Yl-hq-ZCI"/>
+                                    <action selector="newSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pQ6-TB-jDw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="R7W-a6-BjZ">
+                                <rect key="frame" x="127" y="221" width="120" height="11"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Continue Session"/>
+                                <connections>
+                                    <action selector="contSession:" destination="MZM-v5-uye" eventType="touchUpInside" id="MKU-Ym-MfQ"/>
+                                    <action selector="contSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tcg-1n-V55"/>
+                                    <action selector="newSession:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2cM-Rv-iD4"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="                                       " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e4p-OO-Mha">
+                                <rect key="frame" x="44" y="91" width="286" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="1ci-AJ-NHV"/>
+                    </view>
+                    <connections>
+                        <outlet property="currentTimeLabel" destination="e4p-OO-Mha" id="kdm-ZC-La3"/>
+                        <segue destination="wFV-Q9-nUR" kind="show" identifier="SignToChatSegue" id="yxP-0b-YsL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PMS-hu-INi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="685.60000000000002" y="115.59220389805098"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="VJX-o6-Wj2">
             <objects>
@@ -131,7 +161,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Lw-I0-4Za" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1214" y="117"/>
+            <point key="canvasLocation" x="1473" y="116"/>
         </scene>
     </scenes>
     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

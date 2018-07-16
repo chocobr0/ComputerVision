@@ -10,9 +10,7 @@ import UIKit
 import FirebaseDatabase
 
 class SignInVC: UIViewController {
-    private let SIGNTOCHAT_SEGUE = "SignToChatSegue";
-    static var sessionPath = Database.database().reference().child(Constants.SESSIONS).childByAutoId();
-    static var contSessionKey = "";
+    private let SIGNTOSESSION_SEGUE = "SignToSessionSegue";
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     
@@ -32,7 +30,7 @@ class SignInVC: UIViewController {
                 if message != nil {
                     self.alertTheUser(title: "Problem With Authentication", message: message!)
                 } else {
-                    self.performSegue(withIdentifier: self.SIGNTOCHAT_SEGUE, sender: nil);
+                    self.performSegue(withIdentifier: self.SIGNTOSESSION_SEGUE, sender: nil);
                 }
             })
         } else{
@@ -46,7 +44,7 @@ class SignInVC: UIViewController {
                 if message != nil {
                     self.alertTheUser(title: "Problem With Creating New User", message: message!)
                 } else {
-                   self.performSegue(withIdentifier: self.SIGNTOCHAT_SEGUE, sender: nil);
+                   self.performSegue(withIdentifier: self.SIGNTOSESSION_SEGUE, sender: nil);
                 }
             })
         } else{
@@ -54,24 +52,7 @@ class SignInVC: UIViewController {
         }
     }
     
-    @IBAction func newSession(_ sender: Any) {
-        SignInVC.sessionPath = Database.database().reference().child(Constants.SESSIONS).childByAutoId();
-    }
-    
-    @IBAction func contSession(_ sender: Any) {
-        getSession();
-        //SignInVC.sessionPath = Database.database().reference().child(Constants.SESSIONS).child(SignInVC.contSessionKey); //this is bugging -> might be a simple issue as it is an appdelegate error
-    }
-    
-    func getSession() {
-        Database.database().reference().child(Constants.SESSIONS).queryLimited(toLast: 1).observeSingleEvent(of: DataEventType.childAdded) {
-            (snapshot: DataSnapshot) in
-            SignInVC.sessionPath = Database.database().reference().child(Constants.SESSIONS).child(snapshot.key);
-            //SignInVC.contSessionKey = snapshot.key;
-            print("KEY: ", snapshot.key);
-            print("Saved Key: ", SignInVC.contSessionKey);
-        }
-    }
+
     
     private func alertTheUser(title: String, message:String){
         let alert = UIAlertController(title: title, message:message, preferredStyle: .alert);

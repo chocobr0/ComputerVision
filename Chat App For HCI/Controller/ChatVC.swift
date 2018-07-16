@@ -7,25 +7,76 @@
 //
 
 import UIKit
+import ARKit
 import JSQMessagesViewController
 import MobileCoreServices
 import AVKit
 import FirebaseDatabase
 
-class ChatVC: JSQMessagesViewController, MessageReceivedDelegate, UINavigationControllerDelegate{
-    
+class ChatVC: JSQMessagesViewController, MessageReceivedDelegate, UINavigationControllerDelegate, ARSessionDelegate{
+    var currentExpression = "normalMS";
     private var messages = [JSQMessage]();
     private var newMessageRefHandle: MessagesHandler?
+    let session = ARSession();
     
     override func viewDidLoad() {
         super.viewDidLoad()
         MessagesHandler.Instance.delegate = self;
         self.senderId = AuthProvider.Instance.userID();
-        self.senderDisplayName = AuthProvider.Instance.userName;
+        self.senderDisplayName = currentExpression; //AuthProvider.Instance.userName;
         MessagesHandler.Instance.observeMessages();
         self.inputToolbar.contentView.leftBarButtonItem = nil;
-        print("ACCESSING CHATVC");
+        
+        let config = ARFaceTrackingConfiguration();
+        config.worldAlignment = .gravity;
+        session.delegate = self;
+        session.run(config, options: []);
     }
+    
+    ///////////////////////////////////////////////////////////////SETTING UP ARSESSION//////////////////////////////////////////////
+    var currentFaceAnchor: ARFaceAnchor?
+    var currentFrame: ARFrame?
+    var expressionsToUse: [Expression] = [SmileExpression(), FrownExpression(), SurpriseExpression(), AngerExpression(), CheekPuffExpression()]
+    var currentExpressionShownAt: Date? = nil
+    
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        self.currentFrame = frame
+        DispatchQueue.main.async {
+            self.processNewARFrame()
+        }
+    }
+    
+    func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+        
+    }
+    
+    func session(_ session: ARSession, didUpdate anchors: [ARAnchor]) {
+        guard let faceAnchor = anchors.first as? ARFaceAnchor else { return }
+        self.currentFaceAnchor = faceAnchor
+    }
+    
+    func session(_ session: ARSession, didRemove anchors: [ARAnchor]) {
+        
+    }
+    
+    func processNewARFrame() {
+        // called each time ARKit updates our frame (aka we have new facial recognition data)
+        if let faceAnchor = self.currentFaceAnchor {
+            if SmileExpression().isExpressing(from: faceAnchor) {
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                currentExpression = "smileMS"
+            }
+            else if SurpriseExpression().isExpressing(from: faceAnchor) {
+                UINotificationFeedbackGenerator().notificationOccurred(.success)
+                currentExpression = "stunnedMS"
+            }
+            else {
+                currentExpression = "normalMS"
+            }
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////ENDING UP ARSESSION//////////////////////////////////////////////
     
     //COLLECTION VIEW FUNCTIONS
 
@@ -42,19 +93,12 @@ class ChatVC: JSQMessagesViewController, MessageReceivedDelegate, UINavigationCo
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
         let message = messages[indexPath.item];
-        if message.senderId == "lqizrjTo60Q3vTZlo16W0wldNA63" {
-            return JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "determinedTesterMS"), diameter: 30);
-        } else {
-            if message.text == "Hello" {
-                return JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "smileMS"), diameter: 30);
-            }
-            else if message.text == "Great" {
-                return JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "disappointMS"), diameter: 30);
-            }
-            else {
-                return JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "normalMS"), diameter: 30);
-            }
-        }
+        return JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: message.senderDisplayName), diameter: 30);
+//        if message.senderId == "lqizrjTo60Q3vTZlo16W0wldNA63" {
+//            return JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: "determinedTesterMS"), diameter: 30);
+//        } else {
+//            return JSQMessagesAvatarImageFactory.avatarImage(with: UIImage(named: currentExpression), diameter: 30);
+//        }
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
@@ -122,9 +166,8 @@ class ChatVC: JSQMessagesViewController, MessageReceivedDelegate, UINavigationCo
         }
     }
     
-    //should stop observing when ChatVC isn't displaying but it aint! :(
     deinit {
-        DBProvider.Instance.dbRef.removeAllObservers();
+        DBProvider.Instance.messagesRef.removeAllObservers(); //still need to test -> SHOULD WORK NOW
     }
     
 } //class

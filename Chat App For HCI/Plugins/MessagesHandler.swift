@@ -28,7 +28,6 @@ class MessagesHandler {
         DBProvider.Instance.messagesRef.childByAutoId().setValue(data);
     }
     
-    
     func observeMessages() {
         DBProvider.Instance.messagesRef.observe(DataEventType.childAdded ) {
             (snapshot: DataSnapshot!) in
@@ -47,5 +46,6 @@ class MessagesHandler {
             }
         }
     }
+
     
 } //class

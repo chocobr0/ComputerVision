@@ -34,27 +34,15 @@ class DBProvider {
     }
     
     var sessionsRef: DatabaseReference {
-        return SignInVC.sessionPath;
+        return SessionVC.sessionPath;
     }
     
     var messagesRef: DatabaseReference {
         return sessionsRef.child(Constants.MESSAGES);
     }
     
-    var mediaMessagesRef: DatabaseReference {
-        return dbRef.child(Constants.MEDIA_MESSAGES);
-    }
-    
     var storageRef: StorageReference {
         return Storage.storage().reference(forURL: "gs://chathci-2fe3a.appspot.com");
-    }
-    
-    var imageStorageRef: StorageReference {
-        return storageRef.child(Constants.IMAGE_STORAGE);
-    }
-    
-    var videoStorageRef: StorageReference {
-        return storageRef.child(Constants.VIDEO_STORAGE);
     }
     
     func saveUser(withID: String, email: String, password: String){

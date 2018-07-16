@@ -13,9 +13,6 @@ class Constants {
     static let CONTACTS = "Contacts";
     static let SESSIONS = "Sessions";
     static let MESSAGES = "Messages";
-    static let MEDIA_MESSAGES = "Media_Messages";
-    static let IMAGE_STORAGE = "Image_Storage";
-    static let VIDEO_STORAGE = "Video_Storage";
     
     static let EMAIL = "email";
     static let PASSWORD = "password";
@@ -25,6 +22,7 @@ class Constants {
     static let TEXT = "text";
     static let SENDER_ID = "sender_id";
     static let SENDER_NAME = "sender_name";
+    static let EXPRESSION = "expression";
     static let URL = "url";
     
 }

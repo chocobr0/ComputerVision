@@ -29,7 +29,6 @@ class ContactsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, 
                 AuthProvider.Instance.userName = contact.name;
             }
         }
-        myTable.reloadData();
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
