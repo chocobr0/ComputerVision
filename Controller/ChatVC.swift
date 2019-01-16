@@ -25,6 +25,7 @@ class ChatVC: JSQMessagesViewController, MessageReceivedDelegate, UINavigationCo
     var timeExpressionDetected = "NA";
     var timeResponseStarts = "NA";
     var expressionData = "NA";
+    var resetEXPData = "NA";
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -165,8 +166,8 @@ class ChatVC: JSQMessagesViewController, MessageReceivedDelegate, UINavigationCo
     
     override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         timeMSGSent = DateFormatter.localizedString(from: Date(), dateStyle: .short, timeStyle: .medium);
-        let addExpressionData = " " + expressionData;
-        let info = senderId + " MSG Sent: " + timeMSGSent + ", Expression Detected: " + timeExpressionDetected + addExpressionData;
+        let expressionDataString = ", Exp Detected At: " + timeExpressionDetected + ", " + expressionData + " / / / Previous Exp: " + resetEXPData ;
+        let info = senderId + " MSG Sent: " + timeMSGSent + expressionDataString;
         MessagesHandler.Instance.sendMessage(senderID: info, senderName: currentExpression, text: text);
         self.finishSendingMessage();
     }
@@ -178,12 +179,6 @@ class ChatVC: JSQMessagesViewController, MessageReceivedDelegate, UINavigationCo
         messages.append(JSQMessage(senderId: currentUser, displayName: senderName, text: text));
         collectionView.reloadData();
         runSession = true;
-//        if ( (messages.last?.senderId) == testerId ) {
-//            runSession = true;
-//        } else {
-//            runSession = false;
-//            currentExpression = "normalMS";
-//        }
     }
     
     //END DELEGATION FUNCTIONS
@@ -191,21 +186,19 @@ class ChatVC: JSQMessagesViewController, MessageReceivedDelegate, UINavigationCo
     @IBAction func backButton(_ sender: Any) {
         dismiss(animated: true, completion: nil)
         DBProvider.Instance.messagesRef.removeAllObservers();
-//        Database.database().reference().child(Constants.SESSIONS).queryLimited(toLast: 1).observeSingleEvent(of: DataEventType.childAdded) {
-//            (snapshot: DataSnapshot) in
-//            SessionVC.sessionPath = Database.database().reference().child(Constants.SESSIONS).child(snapshot.key);
-//        }
     }
     
+    @IBAction func emotionReset(_ sender: Any) {
+        runSession = true;
+        resetEXPData = expressionData;
+    }
     
     var seconds = 120;
     var reset = false;
     @IBOutlet weak var countdown: UIButton!
-    @IBOutlet weak var logout: UIBarButtonItem!
     @IBOutlet weak var timingChat: UINavigationItem!
     @IBAction func count(_ sender: Any) {
         if(reset == false){
-            //dismiss(animated: true, completion: nil);
             timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ChatVC.counter), userInfo: nil, repeats: true);
             reset = true;
         }
